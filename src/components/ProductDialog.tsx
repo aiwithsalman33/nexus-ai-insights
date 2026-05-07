@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { StatusBadge } from "./StatusBadge";
 import { AiPlaceholder } from "./LoadingSkeleton";
-import { formatDate, normalizeKeywords, type Product } from "@/api/products";
+import { formatDate, getDescription, normalizeKeywords, type Product } from "@/api/products";
 
 export function ProductDialog({
   product,
