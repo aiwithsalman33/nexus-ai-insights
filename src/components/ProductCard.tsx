@@ -42,10 +42,10 @@ export function ProductCard({
         <StatusBadge status={product.status} />
       </div>
 
-      {product.status === "approved" && product.ai_description ? (
+      {description ? (
         <div className="mt-4 space-y-3">
           <p className="line-clamp-3 text-sm text-muted-foreground">
-            {product.ai_description}
+            {description}
           </p>
           {keywords.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
