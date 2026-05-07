@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, Calendar, Tag, DollarSign } from "lucide-react";
 import {
   fetchProduct,
   formatDate,
+  getDescription,
   normalizeKeywords,
   type Product,
 } from "@/api/products";
