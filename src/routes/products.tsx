@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { PackageOpen, RefreshCw, Plus } from "lucide-react";
-import { fetchProducts, type Product } from "@/api/products";
+import { fetchProducts, fetchProduct, type Product } from "@/api/products";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/LoadingSkeleton";
+import { ProductDialog } from "@/components/ProductDialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/products")({
@@ -22,6 +23,20 @@ export const Route = createFileRoute("/products")({
 function ProductListPage() {
   const [products, setProducts] = useState<Product[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Product | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const openProduct = async (p: Product) => {
+    setSelected(p);
+    setDialogOpen(true);
+    // refresh detail in case status changed
+    try {
+      const fresh = await fetchProduct(p.id);
+      setSelected((curr) => (curr && curr.id === p.id ? { ...curr, ...fresh } : curr));
+    } catch {
+      // ignore — keep list snapshot
+    }
+  };
 
   const load = async (silent = false) => {
     try {
@@ -87,10 +102,15 @@ function ProductListPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} onClick={openProduct} />
           ))}
         </div>
       )}
+      <ProductDialog
+        product={selected}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </main>
   );
 }
