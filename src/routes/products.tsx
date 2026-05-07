@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { PackageOpen, RefreshCw, Plus } from "lucide-react";
-import { fetchProducts, type Product } from "@/api/products";
+import { fetchProducts, fetchProduct, type Product } from "@/api/products";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductCardSkeleton } from "@/components/LoadingSkeleton";
+import { ProductDialog } from "@/components/ProductDialog";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/products")({
