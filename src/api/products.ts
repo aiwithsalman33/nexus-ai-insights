@@ -28,7 +28,7 @@ export interface Product {
 
 /** Pulls the best available AI/final description from any known column name. */
 export function getDescription(p: Product): string {
-  const candidates = [
+  const directCandidates = [
     p.ai_description,
     p.final_description,
     p.approved_description,
@@ -36,26 +36,51 @@ export function getDescription(p: Product): string {
     (p as Record<string, unknown>)["Final Description"],
     (p as Record<string, unknown>)["AI Description"],
   ];
-  for (const c of candidates) {
+  for (const c of directCandidates) {
     if (typeof c === "string" && c.trim()) return c.trim();
+  }
+
+  for (const [key, value] of Object.entries(p)) {
+    const normalizedKey = key.toLowerCase().replace(/[^a-z]/g, "");
+    const isDescriptionField =
+      normalizedKey.includes("description") &&
+      (normalizedKey.includes("final") || normalizedKey.includes("approved") || normalizedKey.includes("ai"));
+    if (isDescriptionField && typeof value === "string" && value.trim()) return value.trim();
   }
   return "";
 }
 
+function normalizeProduct(product: Product): Product {
+  const description = getDescription(product);
+  const status = product.status?.toLowerCase?.() as ProductStatus | undefined;
+  return {
+    ...product,
+    status: description && (status === "processing" || status === "pending") ? "published" : status ?? "failed",
+  };
+}
+
+function withCacheBuster(url: string): string {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}_=${Date.now()}`;
+}
+
 export async function fetchProducts(): Promise<Product[]> {
-  const res = await fetch(API_URL, { method: "GET" });
+  const res = await fetch(withCacheBuster(API_URL), { method: "GET", cache: "no-store" });
   if (!res.ok) throw new Error("Failed to load products");
   const data = await res.json();
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.products)) return data.products;
+  if (Array.isArray(data)) return data.map(normalizeProduct);
+  if (Array.isArray(data?.products)) return data.products.map(normalizeProduct);
   return [];
 }
 
 export async function fetchProduct(id: string): Promise<Product> {
-  const res = await fetch(`${API_URL}?action=getProduct&id=${encodeURIComponent(id)}`);
+  const res = await fetch(
+    withCacheBuster(`${API_URL}?action=getProduct&id=${encodeURIComponent(id)}`),
+    { cache: "no-store" },
+  );
   if (!res.ok) throw new Error("Failed to load product");
   const data = await res.json();
-  return data?.product ?? data;
+  return normalizeProduct(data?.product ?? data);
 }
 
 export async function addProduct(payload: {

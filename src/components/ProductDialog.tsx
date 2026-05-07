@@ -2,6 +2,7 @@ import { Sparkles, Calendar, Tag, DollarSign } from "lucide-react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -33,6 +34,9 @@ export function ProductDialog({
             <DialogTitle className="text-2xl">{product.name}</DialogTitle>
             <StatusBadge status={product.status} />
           </div>
+          <DialogDescription>
+            Product details with the latest final approved AI content from the sheet.
+          </DialogDescription>
           <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               <Tag className="h-4 w-4 text-primary" />
