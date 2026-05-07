@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Loader2, XCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Clock, Loader2, XCircle, AlertTriangle, Rocket } from "lucide-react";
 import type { ProductStatus } from "@/api/products";
 
 const map: Record<
