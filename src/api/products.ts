@@ -16,9 +16,29 @@ export interface Product {
   category: string;
   status: ProductStatus;
   ai_description?: string;
+  final_description?: string;
+  approved_description?: string;
+  description?: string;
   seo_keywords?: string[] | string;
   created_at?: string;
   createdAt?: string;
+  [key: string]: unknown;
+}
+
+/** Pulls the best available AI/final description from any known column name. */
+export function getDescription(p: Product): string {
+  const candidates = [
+    p.ai_description,
+    p.final_description,
+    p.approved_description,
+    p.description,
+    (p as Record<string, unknown>)["Final Description"],
+    (p as Record<string, unknown>)["AI Description"],
+  ];
+  for (const c of candidates) {
+    if (typeof c === "string" && c.trim()) return c.trim();
+  }
+  return "";
 }
 
 export async function fetchProducts(): Promise<Product[]> {
