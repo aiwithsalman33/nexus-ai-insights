@@ -63,9 +63,9 @@ export function ProductDialog({
             <Sparkles className="h-3.5 w-3.5 text-primary" />
             Final Approved AI Description
           </h3>
-          {product.status === "approved" && product.ai_description ? (
+          {description ? (
             <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-foreground/90">
-              {product.ai_description}
+              {description}
             </p>
           ) : isWorking ? (
             <AiPlaceholder />
