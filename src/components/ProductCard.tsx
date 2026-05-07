@@ -12,7 +12,9 @@ export function ProductCard({
 }) {
   const keywords = normalizeKeywords(product.seo_keywords);
   const created = product.created_at || product.createdAt;
-  const isWorking = product.status === "processing" || product.status === "pending";
+  const description = getDescription(product);
+  const isWorking =
+    !description && (product.status === "processing" || product.status === "pending");
 
   return (
     <button
