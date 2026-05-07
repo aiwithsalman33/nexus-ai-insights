@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Loader2, XCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Clock, Loader2, XCircle, AlertTriangle, Rocket } from "lucide-react";
 import type { ProductStatus } from "@/api/products";
 
 const map: Record<
@@ -20,6 +20,11 @@ const map: Record<
     label: "Approved",
     cls: "bg-success/15 text-success border-success/30",
     Icon: CheckCircle2,
+  },
+  published: {
+    label: "Published",
+    cls: "bg-success/15 text-success border-success/30",
+    Icon: Rocket,
   },
   rejected: {
     label: "Rejected",
