@@ -102,10 +102,15 @@ function ProductListPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} onClick={openProduct} />
           ))}
         </div>
       )}
+      <ProductDialog
+        product={selected}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </main>
   );
 }
