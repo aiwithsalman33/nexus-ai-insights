@@ -93,7 +93,9 @@ function ProductDetailPage() {
 
   const keywords = normalizeKeywords(product.seo_keywords);
   const created = product.created_at || product.createdAt;
-  const isWorking = product.status === "processing" || product.status === "pending";
+  const description = getDescription(product);
+  const isWorking =
+    !description && (product.status === "processing" || product.status === "pending");
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 md:py-14">
