@@ -5,6 +5,7 @@ export type ProductStatus =
   | "processing"
   | "pending"
   | "approved"
+  | "published"
   | "rejected"
   | "failed";
 
