@@ -4,6 +4,7 @@ import { ArrowLeft, Sparkles, Calendar, Tag, DollarSign } from "lucide-react";
 import {
   fetchProduct,
   formatDate,
+  getDescription,
   normalizeKeywords,
   type Product,
 } from "@/api/products";
@@ -92,7 +93,9 @@ function ProductDetailPage() {
 
   const keywords = normalizeKeywords(product.seo_keywords);
   const created = product.created_at || product.createdAt;
-  const isWorking = product.status === "processing" || product.status === "pending";
+  const description = getDescription(product);
+  const isWorking =
+    !description && (product.status === "processing" || product.status === "pending");
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10 md:py-14">
@@ -140,9 +143,9 @@ function ProductDetailPage() {
             <Sparkles className="h-3.5 w-3.5 text-primary" />
             AI Description
           </h2>
-          {product.status === "approved" && product.ai_description ? (
+          {description ? (
             <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-foreground/90">
-              {product.ai_description}
+              {description}
             </p>
           ) : isWorking ? (
             <AiPlaceholder />

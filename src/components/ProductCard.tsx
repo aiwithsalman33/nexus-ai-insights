@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import { AiPlaceholder } from "./LoadingSkeleton";
-import { formatDate, normalizeKeywords, type Product } from "@/api/products";
+import { formatDate, getDescription, normalizeKeywords, type Product } from "@/api/products";
 
 export function ProductCard({
   product,
@@ -12,7 +12,9 @@ export function ProductCard({
 }) {
   const keywords = normalizeKeywords(product.seo_keywords);
   const created = product.created_at || product.createdAt;
-  const isWorking = product.status === "processing" || product.status === "pending";
+  const description = getDescription(product);
+  const isWorking =
+    !description && (product.status === "processing" || product.status === "pending");
 
   return (
     <button
@@ -40,10 +42,10 @@ export function ProductCard({
         <StatusBadge status={product.status} />
       </div>
 
-      {product.status === "approved" && product.ai_description ? (
+      {description ? (
         <div className="mt-4 space-y-3">
           <p className="line-clamp-3 text-sm text-muted-foreground">
-            {product.ai_description}
+            {description}
           </p>
           {keywords.length > 0 && (
             <div className="flex flex-wrap gap-1.5">
