@@ -21,6 +21,11 @@ const map: Record<
     cls: "bg-success/15 text-success border-success/30",
     Icon: CheckCircle2,
   },
+  published: {
+    label: "Published",
+    cls: "bg-success/15 text-success border-success/30",
+    Icon: Rocket,
+  },
   rejected: {
     label: "Rejected",
     cls: "bg-destructive/15 text-destructive border-destructive/30",
